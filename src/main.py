@@ -38,13 +38,11 @@ def display_board():
 def make_list_of_free_fields():
     # The function browses the board and builds a list of all the free squares; 
     # the list consists of tuples, while each tuple is a pair of row and column numbers.
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            field_value = board[i][j]
-            if field_value != 'X' and field_value != 'O':
+    for i, row in enumerate(board):
+        for j, field in enumerate(row):
+            if field not in ('X', 'O'):
                 free_board_fields.append((i, j))
-                print(f'Free field found: row {i}, field {j}, value {field_value}')
-    print(free_board_fields)
+    print(f'Free fields: {free_board_fields}') # DEBUG
 
 
 def draw_computer_move():
