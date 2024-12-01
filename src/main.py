@@ -40,6 +40,8 @@ def display_board():
 def make_list_of_free_fields():
     # The function browses the board and builds a list of all the free squares;
     # the list consists of tuples, while each tuple is a pair of row and column numbers.
+    if len(free_board_fields) != 0:
+        free_board_fields.clear()
     for i, row in enumerate(board):
         for j, field in enumerate(row):
             if field not in ('X', 'O'):
@@ -55,12 +57,25 @@ def draw_computer_move():
     move_row, move_column = move
     board[move_row][move_column] = 'X'
     # TODO: Check if the game if finished
+    global next_player_computer
     next_player_computer = False
 
 def enter_move():
     # The function accepts the board's current status, asks the user about their move,
     # checks the input, and updates the board according to the user's decision.
     make_list_of_free_fields()
+    while True:
+        print('\nYour turn.')
+        try:
+            move_row = int(input('Enter your row field (0, 1, 2): '))
+            move_column = int(input('Enter your column field (0, 1, 2): '))
+            break
+        except ValueError:
+            print('You entered an invalid value. Please try again.\n')
+    board[move_row][move_column] = 'O'
+    # TODO: Check if the game if finished
+    global next_player_computer
+    next_player_computer = True
 
 # def victory_for(board, sign):
     # The function analyzes the board's status in order to check if
@@ -76,5 +91,6 @@ def main():
             draw_computer_move()
         else:
             enter_move()
+            break
 
 main()
