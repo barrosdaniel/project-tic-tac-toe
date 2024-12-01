@@ -7,6 +7,8 @@ board = [['1', '2', '3'],
          ['4', '5', '6'],
          ['7', '8', '9']]
 free_board_fields = []
+game_continues = True
+next_player_computer = True
 
 def print_welcome_message():
     print('=' * 25)
@@ -36,34 +38,43 @@ def display_board():
     print_divider_line()
 
 def make_list_of_free_fields():
-    # The function browses the board and builds a list of all the free squares; 
+    # The function browses the board and builds a list of all the free squares;
     # the list consists of tuples, while each tuple is a pair of row and column numbers.
     for i, row in enumerate(board):
         for j, field in enumerate(row):
             if field not in ('X', 'O'):
                 free_board_fields.append((i, j))
-    print(f'Free fields: {free_board_fields}') # DEBUG
-
+    print(f'Free fields: {free_board_fields}') # DEBUG: DELETE
 
 def draw_computer_move():
     # The function draws the computer's move and updates the board.
     make_list_of_free_fields()
     print('\nIt\'s my turn. There you go.')
-    # TODO: Incomplete.
+    move_index = randrange(len(free_board_fields))
+    move = free_board_fields[move_index]
+    move_row, move_column = move
+    board[move_row][move_column] = 'X'
+    # TODO: Check if the game if finished
+    next_player_computer = False
 
-# def enter_move(board):
-    # The function accepts the board's current status, asks the user about their move, 
+def enter_move():
+    # The function accepts the board's current status, asks the user about their move,
     # checks the input, and updates the board according to the user's decision.
+    make_list_of_free_fields()
 
 # def victory_for(board, sign):
-    # The function analyzes the board's status in order to check if 
+    # The function analyzes the board's status in order to check if
     # the player using 'O's or 'X's has won the game
 
 
 
 def main():
     print_welcome_message()
-    display_board()
-    draw_computer_move()
+    while game_continues:
+        display_board()
+        if next_player_computer:
+            draw_computer_move()
+        else:
+            enter_move()
 
 main()
