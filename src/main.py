@@ -9,6 +9,7 @@ board = [['1', '2', '3'],
 free_board_fields = []
 game_continues = True
 next_player_computer = True
+have_winner = False
 
 def print_welcome_message():
     print('=' * 25)
@@ -55,8 +56,9 @@ def draw_computer_move():
     move_index = randrange(len(free_board_fields))
     move = free_board_fields[move_index]
     move_row, move_column = move
-    board[move_row][move_column] = 'X'
-    # TODO: Check if the game if finished
+    sign = 'X'
+    board[move_row][move_column] = sign
+    check_victory_for(sign)
     global next_player_computer
     next_player_computer = False
 
@@ -72,16 +74,37 @@ def enter_move():
             break
         except ValueError:
             print('You entered an invalid value. Please try again.\n')
-    board[move_row][move_column] = 'O'
-    # TODO: Check if the game if finished
+    sign = 'O'
+    board[move_row][move_column] = sign
+    check_victory_for(sign)
     global next_player_computer
     next_player_computer = True
 
-# def victory_for(board, sign):
+def check_victory_for(sign):
     # The function analyzes the board's status in order to check if
     # the player using 'O's or 'X's has won the game
+    global have_winner
+    global game_continues
+    if board[0][0] == board[0][1] == board[0][2] \
+        or board[1][0] == board[1][1] == board[1][2] \
+        or board[2][0] == board[2][1] == board[2][2] \
+        or board[0][0] == board[1][0] == board[2][0] \
+        or board[0][1] == board[1][1] == board[2][1] \
+        or board[0][2] == board[1][2] == board[2][2] \
+        or board[0][0] == board[1][1] == board[2][2] \
+        or board[0][2] == board[1][1] == board[2][0]:
+        have_winner = True
 
+    if have_winner:
+        game_continues = False
+        display_victory_message(sign)
 
+def display_victory_message(sign):
+    print('We have a winner!')
+    if sign == 'X':
+        print('Computer wins!')
+    elif sign == 'O':
+        print('Player wins!')
 
 def main():
     print_welcome_message()
@@ -91,6 +114,5 @@ def main():
             draw_computer_move()
         else:
             enter_move()
-            break
 
 main()
